@@ -1,0 +1,36 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:cxf="http://cxf.apache.org/core"
+      xsi:schemaLocation="
+http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+   
+  <cxf:bus>
+        <cxf:properties>
+            <entry key="org.apache.cxf.jaxrs.bus.providers" ref="busProviders"/>
+        </cxf:properties>
+  </cxf:bus>
+
+  <util:list id="busProviders">
+    <ref bean="exceptionMapper"/>
+    <ref bean="customMessageBodyReader"/>
+    <ref bean="customMessageBodyWriter"/>
+  </util:list>
+ 
+  <bean id="exceptionMapper" class="org.apache.cxf.systest.jaxrs.RuntimeExceptionMapper"/>
+  <bean id="customMessageBodyReader" class="org.apache.cxf.systest.jaxrs.CustomReader"/>
+  <bean id="customMessageBodyWriter" class="org.apache.cxf.systest.jaxrs.CustomWriter"/>
+ 
+  <jaxrs:server id="customerService" address="/service1">
+    <jaxrs:serviceBeans>
+      <bean class="org.apache.cxf.systest.jaxrs.CustomerService"/>
+    </jaxrs:serviceBeans>
+  </jaxrs:server>
+ 
+  <jaxrs:server id="customerService" address="/service2">
+    <jaxrs:serviceBeans>
+      <bean class="org.apache.cxf.systest.jaxrs.CustomerService2"/>
+    </jaxrs:serviceBeans>
+  </jaxrs:server>
+   
+  </beans>
